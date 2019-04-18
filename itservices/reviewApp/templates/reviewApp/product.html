@@ -2,17 +2,18 @@
 {% extends "reviewApp/base.html" %}
 
 {% block content %}
-	<h1>Welcome to Student IT Services</h1>
+	<h1>Review Tech Products</h1>
 	{% for product in products %}
 		<article class="media content-section">
-		  <div class="media-body">
-		    <div class="article-metadata">
-		      <a class="mr-2" href="#">{{ Student Name }} ({{Course}})</a>
-		      <small class="text-muted">{{ Date Reported}}</small>
-		    </div>
-		    <h2><a class="article-title" href="#">{{ The Issue Type  }} in {{issue.room}}</a></h2>
-		    <p class="article-content">{{ The Details }}</p>
-		  </div>
+			<img class="article-img" src="{{ product.product_image.url }}"/>
+			<div class="media-body">
+			    <div class="article-metadata">
+			    	<a class="mr-2" href="#">{{ product.name }} ({{product.name}})</a>
+			    		<small class="text-muted">{{ product.name }}</small>
+			    </div>
+			    <h2><a class="article-title" href="#">{{ product.name  }} in {{product.name}}</a></h2>
+			    <p class="article-content">{{ product.names }}</p>
+			</div>
 		</article>
 	{% endfor %}
 {% endblock content %}
