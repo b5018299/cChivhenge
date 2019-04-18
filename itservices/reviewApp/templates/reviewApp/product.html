@@ -1,0 +1,18 @@
+
+{% extends "reviewApp/base.html" %}
+
+{% block content %}
+	<h1>Welcome to Student IT Services</h1>
+	{% for product in products %}
+		<article class="media content-section">
+		  <div class="media-body">
+		    <div class="article-metadata">
+		      <a class="mr-2" href="#">{{ Student Name }} ({{Course}})</a>
+		      <small class="text-muted">{{ Date Reported}}</small>
+		    </div>
+		    <h2><a class="article-title" href="#">{{ The Issue Type  }} in {{issue.room}}</a></h2>
+		    <p class="article-content">{{ The Details }}</p>
+		  </div>
+		</article>
+	{% endfor %}
+{% endblock content %}
