@@ -1,8 +1,9 @@
 {% extends "reviewApp/base.html" %}
 
 {% block content %}
-	<h1>Review Tech Products</h1>
+
 	{% for product in products %}
+	<h1 class="mb-3">{{ product.name }}</h1>
 		<article class="media content-section">
 			<a href="{% url 'reviews' product.id %}">
 				<img class="article-img" src="{{ product.product_image.url }}"/>
@@ -14,6 +15,20 @@
 			    </div>
 			    <h2>{{ product.name  }} in {{product.name}}</h2>
 			    <p class="article-content">{{ product.names }}</p>
+			</div>
+		</article>
+	{% endfor %}
+
+	{% for review in reviews %}
+		<article class="media content-section">
+			<img class="rounded-circle article-img" src="{{ review.author.profile.image.url }}"/>
+			<div class="media-body">
+			    <div class="article-metadata">
+		    		<small class="mr-2">Review by {{ review.author }}</small>
+			    	<small class="text-muted">{{ review.date_posted }}</small>
+			    </div>
+			    <small>{{ review.rating }} stars</small>
+			    <p class="article-content">{{ review.review_text }}</p>
 			</div>
 		</article>
 	{% endfor %}

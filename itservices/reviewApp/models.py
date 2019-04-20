@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.db.models import IntegerField, Model
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Product(models.Model):
 	name=models.CharField(max_length=100)
@@ -13,3 +15,19 @@ class Product(models.Model):
 
 	def __str__(self):
 		return self.name #The text which is shown on the list.
+
+class Review(models.Model):
+	author=models.ForeignKey(User, on_delete=models.CASCADE)
+	product=models.ForeignKey(Product, on_delete=models.CASCADE, default='1')
+	rating=IntegerField(
+		default=0,
+        validators=[
+            MaxValueValidator(5),
+            MinValueValidator(0)
+        ]
+     )
+	review_text=models.TextField()
+	date_posted=models.DateTimeField(default=timezone.now)
+
+	def __str__(self):
+		return f' Review by {self.author.username} of the {self.product}'
