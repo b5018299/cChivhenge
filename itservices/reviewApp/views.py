@@ -1,6 +1,8 @@
+from django.urls import reverse
 from .models import Product, Review
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 def home(request):
 	return render(request, 'reviewApp/home.html', {'title': 'Home'})
@@ -39,22 +41,50 @@ class ProductReviewsListView(ListView):
 	queryset = Review.objects.all()
 
 	def get_context_data(self, **kwargs):
-		productName = self.kwargs['pk']
+		productId = self.kwargs['pk']
+		product=get_object_or_404(Product, id=productId) #Shows the user a 404 if the product doesnt exist
 		context = super(ProductReviewsListView, self).get_context_data(**kwargs)
-		context['reviews'] = Review.objects.filter(product=productName)
-		context['products'] = Product.objects.filter(id=productName)
+		context['reviews'] = Review.objects.filter(product=productId) #do an order by?
+		context['products'] = Product.objects.filter(id=productId)
 		return context
 
-	#def get_context_data(self, **kwargs):
-	#	context = super(ProductReviewsListView, self).get_context_data(**kwargs)
-    #	some_data = Product.objects.all()
-    #	context.update({'some_data': some_data})
-    #	return context
+class CreateReview(LoginRequiredMixin, CreateView):
+	model = Review
+	fields = ['rating', 'review_text']
 
-	#def get_queryset(self): #Get a list of review for a specific product
-	#	product=get_object_or_404(Product, name=self.kwargs.get('name'))
-	#	#return Review.objects.filter(product=product).order_by('-rating')
+	def form_valid(self, form, **kwargs):
+		productId = self.kwargs['pk']
+		form.instance.author = self.request.user
+		form.instance.product = Product.objects.get(id=productId)
+		return super().form_valid(form)
 
-	#def get_context_data(self, **kwargs):
-	#	context = super(ProductReviewsListView, self).get_context_data(**kwargs)
-	#	context['reviews'] = Review.objects.filter(product=product).order_by('-rating')
+class UpdateReview(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+	model = Review
+	fields = ['rating', 'review_text']
+
+	def test_func(self):
+		review = self.get_object()
+		if self.request.user == review.author:
+			return True
+		return False
+
+class DeleteReview(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+	model = Review
+
+	# def redirect(self, **kwargs):
+	# 	success_url = '/product', kwargs={'pk': self.product.id}
+
+	# def get_absolute_url(self):
+	# 	#success_url = '/review', kwargs={'pk': self.product.id}
+	# 	return reverse('reviews', kwargs={'pk': self.product.id}) #after creating review, redirect to product page
+
+	def get_success_url(self):
+		#slug = self.kwargs['slug']
+		review = self.get_object()
+		return reverse('reviews', kwargs={'pk': review.product.id})
+
+	def test_func(self):
+		review = self.get_object()
+		if self.request.user == review.author:
+			return True
+		return False

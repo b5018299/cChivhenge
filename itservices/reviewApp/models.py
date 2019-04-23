@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db.models import IntegerField, Model
@@ -31,3 +32,7 @@ class Review(models.Model):
 
 	def __str__(self):
 		return f' Review by {self.author.username} of the {self.product}'
+
+	def get_absolute_url(self):
+		#return reverse('product', kwargs={'pk': self.product.id}) #after creating review, redirect to product page
+		return reverse('reviews', kwargs={'pk': self.product.id}) #after creating review, redirect to product page

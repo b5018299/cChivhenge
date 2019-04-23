@@ -14,7 +14,8 @@
 			    		<small class="text-muted">{{ product.name }}</small>
 			    </div>
 			    <h2>{{ product.name  }} in {{product.name}}</h2>
-			    <p class="article-content">{{ product.names }}</p>
+			    <p class="article-content">{{ product.name }}</p>
+			    <a class="mr-2" href="{% url 'review-create' product.id %}">Write a Review</a>
 			</div>
 		</article>
 	{% endfor %}
@@ -29,6 +30,10 @@
 			    </div>
 			    <small>{{ review.rating }} stars</small>
 			    <p class="article-content">{{ review.review_text }}</p>
+				{% if review.author == user %}
+					<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'review-update' review.id %}">Update</a>
+					<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'review-delete' review.id %}">Delete</a>
+				{% endif %}
 			</div>
 		</article>
 	{% endfor %}
