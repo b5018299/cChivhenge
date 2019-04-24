@@ -7,8 +7,8 @@
 				<img class="rounded-circle account-img"src="{{user.profile.image.url}}">
 			</p>
 			<div class="media-body">
-				<h2 class="account-heading">{{user.profile}}</h2>
-				<p class="text-secondary">{{user.username}}</p>
+				<h5 class="account-heading">{{user.username}}'s Profile</h5>
+				<!-- <p class="text-secondary">{{user.username}}</p> -->
 				<p class="text-secondary">{{user.email}}</p>
 			</div>
 		</div>
@@ -18,7 +18,7 @@
 
 			<fieldset class="form-group">
 				<legend class="border-bottom mb-4">
-					Tech Review - Profile Details
+					Profile Details
 				</legend>
 				{{ u_form|crispy }} <!-- Input fields are loaded here -->
 				{{ p_form|crispy }} <!-- Input fields are loaded here -->

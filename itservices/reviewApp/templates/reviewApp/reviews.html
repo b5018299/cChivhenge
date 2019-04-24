@@ -3,21 +3,23 @@
 {% block content %}
 
 	{% for product in products %}
-	<h1 class="mb-3">{{ product.name }}</h1>
-		<article class="media content-section">
-			<a href="{% url 'reviews' product.id %}">
-				<img class="article-img" src="{{ product.product_image.url }}"/>
-			</a>
-			<div class="media-body">
-			    <div class="article-metadata">
-			    	<a class="mr-2" href="{% url 'reviews' product.id %}">{{ product.name }}</a>
-			    		<small class="text-muted">{{ product.name }}</small>
-			    </div>
-			    <h2>{{ product.name  }} in {{product.name}}</h2>
-			    <p class="article-content">{{ product.name }}</p>
-			    <a class="mr-2" href="{% url 'review-create' product.id %}">Write a Review</a>
-			</div>
-		</article>
+	<!-- <h3 class="mb-3">{{ product.name }}</h3> -->
+	<a href="{% url 'reviews' product.id %}">
+		<img id="pdp-item-image" class="article-img" src="{{ product.product_image.url }}"/>
+	</a>
+	<article class="media content-section">
+		
+		<div class="media-body">
+		    <div class="article-metadata">
+		    	<h5 class="mr-2">{{ product.name }}</h5>
+		    	<h7 id="product-item-price" class="mr-2">£{{ product.average_cost }}</h7>
+	    		<small class="text-muted">{{ product.category.name }}</small>
+		    </div>
+		    <p>{{ product.description }}</p>
+		    <br />
+		    <a class="mr-2" href="{% url 'review-create' product.id %}">Write a Review</a>
+		</div>
+	</article>
 	{% endfor %}
 
 	{% for review in reviews %}

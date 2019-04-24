@@ -9,9 +9,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 def home(request):
-	return render(request, 'reviewApp/home.html', {'title': 'Home'})
+	product_item= {
+		'products': Product.objects.all()
+	}
+	return render(request, 'reviewApp/home.html', product_item)
 def about(request):
-	return render(request, 'reviewApp/about.html', {'title': 'About'})
+	product_item= {
+		'products': Product.objects.all()
+	}
+	return render(request, 'reviewApp/about.html', product_item)
 def contact(request):
 	if request.method == 'POST':
 		name = request.POST['name']
@@ -36,9 +42,15 @@ def product(request):
 
 def product(request):
 	product_item= {
-		'products': Product.objects.all() #defining what 'products' is
+		'products': Product.objects.all()
 	}
 	return render(request, 'reviewApp/product.html', product_item)
+
+def category(request):
+	category_item= {
+		'categories': Category.objects.all()
+	}
+	#return render(request, 'reviewApp/product.html', product_item)
 
 #def review(request):
 #	review_item= {
@@ -46,11 +58,12 @@ def product(request):
 #	}
 #	return render(request, 'reviewApp/review.html', review_item)
 
-class PostListView(ListView):
+class ProductListingView(ListView):
 	model = Product
 	template_name = 'reviewApp/product.html'
 	context_object_name = 'products'
 	ordering = ['-name']
+	paginate_by = 7
 
 class PostDetailView(DetailView):
 	model = Product
@@ -110,13 +123,3 @@ class DeleteReview(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 			return True
 		return False
 
-# def index(request):
-# 	if request.method == 'POST':
-# 		message = request.POST['message']
-
-# 		send_mail('Conract Form', #Email heading
-# 		message,
-# 		settings.EMAIL_HOST_USER,
-# 		['chishachivhenge@gmail.com'],
-# 		fail_silently=False)
-# 	return render(request, 'product')

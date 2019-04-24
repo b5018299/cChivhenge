@@ -34,6 +34,7 @@
 	    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}" /> <!-- CSS file -->
 	    <link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
 		<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+		<link rel="shortcut icon" href="{% static 'images/icons/correct.png' %}" />
 
 	    {% if title %}
 			<title>Review Tech - {{title}}</title>
@@ -47,7 +48,7 @@
 			<header class="site-header">
 			  	<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
 				    <div class="container">
-				        <a class="navbar-brand mr-4" href="{% url 'home' %}">Tech Review</a>
+				        <a class="navbar-brand mr-4" href="{% url 'home' %}">Tech Review ™</a>
 				        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
 				        	<span class="navbar-toggler-icon"></span>
 				        </button>
@@ -85,20 +86,47 @@
 
 					{% block content %} <!--Content appears here --> {% endblock %}
 				</div>
+				<!-- Right panel section -->
 				<div class="col-md-4">
-					<div class="content-section">
-				        <h3>General Information</h3>
+					<div class="content-section" style="text-align: center;">
+				        <h3 id="deals-header">MEGA DEALS</h3>
 				        <p class='text-muted'>
-				        	Lorem ipsum dolor sit amet, iudico docendi inciderint per eu, ea vis scripta senserit periculis.
+				        	Don't miss out on any of these deals!
 				        </p>
-			          	<ul class="list-group">
+
+				        {% for product in products|slice:"0:3" %}
+							<article class="media content-section" style="display: block;">
+								<a href="{% url 'reviews' product.id %}">
+									<img class="article-img" src="{{ product.product_image.url }}"/>
+								</a>
+								<div class="media-body">
+								    <div class="article-metadata">
+								    	<a class="mr-2" href="{% url 'reviews' product.id %}">{{ product.name }}</a>
+								    		<br>
+								    		<small class="text-muted">£{{ product.average_cost }}</small>
+								    </div>
+								</div>
+							</article>
+						{% endfor %}
+
+
+			          	<!-- <ul class="list-group">
 				            <li class="list-group-item list-group-item-light">Latest Issues Reported</li>
 				            <li class="list-group-item list-group-item-light">IT Policies</li>
 				            <li class="list-group-item list-group-item-light">IT Regulations</li>
 				            <li class="list-group-item list-group-item-light">Upcoming Events</li>
-			          	</ul>
+			          	</ul> -->
 			      	</div>
 				</div>
+			</div>
+		</div>
+		<div id="footer">
+			<div id="footer-nav-links">
+				<a id="footer-logo" class="navbar-brand mr-4" href="{% url 'home' %}">Tech Review ™</a>
+				<a class="footer-nav-link" href="{% url 'home' %}">Home</a>
+	          	<a class="footer-nav-link" href="{% url 'about' %}">About</a>
+	           	<a class="footer-nav-link" href="{% url 'product' %}">Product</a>
+	            <a id="contact-nav-link" class="footer-nav-link" href="#">Contact</a>
 			</div>
 		</div>
 
